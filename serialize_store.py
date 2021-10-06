@@ -1,31 +1,45 @@
-import time
+# ipfs: 0.8.0
+# ipfshttpclient: pip install ipfshttpclient==0.8.0a2
+
+import ipfshttpclient
+import sys
 import pickle
-import ipfsApi
+import time
+import os
 
-start = time.time()  # start time
+client = ipfshttpclient.connect("/ip4/127.0.0.1/tcp/5001")
 
-FILE = "./data/1mb.txt"
-OUT_FILE = "./serialized_text.txt"
+FILE = "testfile.txt"
+IMG = "logo.png"
 
-api = ipfsApi.Client('127.0.0.1', 5001)
-# # Serialization
-with open(FILE, "rb") as f:
-    file = f.read()
-    data = pickle.dumps(file)
+def run_measurement(document, runs, type):
 
-end_serialization = time.time()
-print("Elapsed time to serialize is  {}".format(end_serialization - start))
+    t_s = []
+    t_t = []
 
-with open(OUT_FILE, "wb") as f2:
-    f2.write(data)
+    print("Running measurements for {} with {} serialization".format(document, type))
+    for i in range(runs):
 
-# Store to IPFS/ central server
-file_hash = api.add(OUT_FILE)
-print(api)
-end_upload = time.time()
+        start = time.time()
 
-print(file_hash)
+        # serialize
+        in_file = open(os.path.join(sys.path[0], document), "rb")
+        if type == "pickle":
+            serialized = pickle.dumps(in_file.read())
+        
+        in_file.close()
+        end1 = time.time()
 
-print("Total elapsed time (serialization + storage) is  {}".format(end_upload - start))
+        # upload to ipfs
+        res = client.add_bytes(serialized)
+        end2 = time.time()
 
+        t_s.append(end1 - start)
+        t_t.append(end2 - start)
+        print("Run {}: serialize {}, total {}".format(i+1, round(t_s[i], 8), round(t_t[i], 8)))
+    print("Avg: serialize {}, total {}".format(np.mean(t_s), np.mean(t_t)))
+    print(res)
 
+run_measurement(FILE, 10, "pickle")
+print("---------------")
+run_measurement(IMG, 10, "pickle")
