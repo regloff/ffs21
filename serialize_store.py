@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 
 client = ipfshttpclient.connect("/ip4/127.0.0.1/tcp/5001")
 
-FILE = "testfile.txt"
+FILE = "data/1mb.txt"
 IMG = "bunny.jpg"
 
 

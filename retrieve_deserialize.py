@@ -12,9 +12,9 @@ import matplotlib.pyplot as plt
 
 client = ipfshttpclient.connect("/ip4/127.0.0.1/tcp/5001")
 
-PICKLE_FILE_HASH = "QmTkHKGbWSitKAt2arRVGKSNPNrNn8CD5V2xfP8RapP7DT"
+PICKLE_FILE_HASH = "QmfGEcjpNkDJtqae7JZmXMf4NRu7Uu6GNf1PMVnfqPjsRZ"
 PICKLE_IMG_HASH = "QmQWgYQphs8NM1RfWr2UmhEd7f1UjN9RfP46R24g8neSvB"
-FILE_CSV = "QmVVT1VAQxbS77p3gYKANYYS4AbpUktuXe437W9995znPJ"
+CSV_FILE_HASH = "Qmb6WHfMmp3E85P26D1qjVeXbNYrTSHyjGW1jAqkhNuV2c"
 
 def plot_time_elapsed_serialize_text(t_t_pickle, t_t_csv, file_type):
     x = [i for i in range(len(t_t_pickle))]
@@ -75,7 +75,7 @@ def run_measurement(document, runs, type):
 print("---------------")
 # run_measurement(PICKLE_FILE_HASH, 10, "json")
 
-tt_csv = run_measurement(FILE_CSV, 10, "csv")
+tt_csv = run_measurement(CSV_FILE_HASH, 10, "csv")
 tt_pickle = run_measurement(PICKLE_FILE_HASH, 10, "pickle")
 
 
