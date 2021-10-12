@@ -7,6 +7,8 @@ import pickle
 import time
 import os
 
+import numpy as np
+
 client = ipfshttpclient.connect("/ip4/127.0.0.1/tcp/5001")
 
 FILE = "testfile.txt"
@@ -26,7 +28,10 @@ def run_measurement(document, runs, type):
         in_file = open(os.path.join(sys.path[0], document), "rb")
         if type == "pickle":
             serialized = pickle.dumps(in_file.read())
-        
+        if type == "csv":
+            serialized = b""
+            for line in in_file.readlines():
+                serialized += line
         in_file.close()
         end1 = time.time()
 
@@ -42,4 +47,4 @@ def run_measurement(document, runs, type):
 
 run_measurement(FILE, 10, "pickle")
 print("---------------")
-run_measurement(IMG, 10, "pickle")
+run_measurement(IMG, 10, "csv")
