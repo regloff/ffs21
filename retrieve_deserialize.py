@@ -16,10 +16,10 @@ PICKLE_FILE_HASH = "QmPwsb72V1e6sfMFzQRf7Rf538xsy5zymhWqxm6QkUzRwa"
 PICKLE_IMG_HASH = "QmQWgYQphs8NM1RfWr2UmhEd7f1UjN9RfP46R24g8neSvB"
 
 
-def plot_time_elapsed_serialize_text(t_t_pickle, t_t_csv, file_type):
-    x = [i for i in range(len(t_t_pickle))]
+def plot_time_elapsed_serialize_text(t_t_json, t_t_csv, file_type):
+    x = [i for i in range(len(t_t_json))]
 
-    plt.plot(x, t_t_pickle, label="Pickle {} deserialization".format(file_type))
+    plt.plot(x, t_t_json, label="JSON {} deserialization".format(file_type))
     plt.plot(x, t_t_csv, label="CSV {} deserialization".format(file_type))
 
     plt.title("Time elapsed to retrieve and deserialize for {}".format(file_type))
