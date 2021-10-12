@@ -28,7 +28,7 @@ def plot_time_elapsed_serialize_text(t_t_json, t_t_csv, file_type):
     plt.ylabel("time")
 
     plt.legend()
-    plt.savefig("Serialization.png")
+    plt.savefig("serialization.png")
     plt.show()
 
 def plot_time_elapsed_serialize_image(x_array, t_t_csv, file_type):
