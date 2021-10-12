@@ -30,6 +30,18 @@ def plot_time_elapsed_serialize_text(t_t_pickle, t_t_csv, file_type):
     plt.legend()
     plt.show()
 
+def plot_time_elapsed_serialize_image(x_array, t_t_csv, file_type):
+    x = [i for i in range(len(x_array))]
+
+    plt.plot(x, t_t_csv, label="CSV {} serialization".format(file_type))
+
+    plt.title("Time elapsed to serialize and store for {}".format(file_type))
+    plt.xlabel("# run")
+    plt.ylabel("time")
+
+    plt.legend()
+    plt.show()
+
 
 def run_measurement(document, runs, type):
 
@@ -43,12 +55,14 @@ def run_measurement(document, runs, type):
 
         # serialize
         in_file = open(os.path.join(sys.path[0], document), "rb")
+        if type == "pickle":
+            serialized = pickle.dumps(in_file.read())
         if type == "json":
             serialized = bytes(json.dumps({"data": str(in_file.read())}), encoding="utf-8")
         if type == "csv":
             serialized = b""
             for line in in_file.readlines():
-                serialized += line
+                serialized += line + b','
         in_file.close()
         end1 = time.time()
 
@@ -61,11 +75,21 @@ def run_measurement(document, runs, type):
         print("Run {}: serialize {}, total {}".format(i+1, round(t_s[i], 8), round(t_t[i], 8)))
     print("Avg: serialize {}, total {}".format(np.mean(t_s), np.mean(t_t)))
     print(res)
+    return t_t
 
 # run_measurement(FILE, 10, "pickle")
 print("---------------")
-run_measurement(FILE, 10, "json")
-run_measurement(IMG, 10, "csv")
+# run_measurement(FILE, 10, "json")
+serializations = ["csv", "pickle"]
+
+tt_csv = run_measurement(FILE, 10, "csv")
+tt_pickle = run_measurement(FILE, 10, "pickle")
+tt_img = run_measurement(IMG, 10, "csv")
 
 # try with random numbers
-plot_time_elapsed_serialize_text([1.3, 1.6, 0.04, 3.66, 4.52, 0.02], [0.34, 4.09, 5.23, 7.32, 0.01, 6.4], "text")
+p1 = plot_time_elapsed_serialize_text(tt_pickle, tt_csv, "text")
+p2 = plot_time_elapsed_serialize_image([0] * len(tt_img),tt_img, "image")
+
+plt.savefig(p1,'serializations.png')
+plt.savefig(p2,'img.png')
+

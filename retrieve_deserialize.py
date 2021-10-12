@@ -12,9 +12,9 @@ import matplotlib.pyplot as plt
 
 client = ipfshttpclient.connect("/ip4/127.0.0.1/tcp/5001")
 
-PICKLE_FILE_HASH = "QmPwsb72V1e6sfMFzQRf7Rf538xsy5zymhWqxm6QkUzRwa"
+PICKLE_FILE_HASH = "QmTkHKGbWSitKAt2arRVGKSNPNrNn8CD5V2xfP8RapP7DT"
 PICKLE_IMG_HASH = "QmQWgYQphs8NM1RfWr2UmhEd7f1UjN9RfP46R24g8neSvB"
-
+FILE_CSV = "QmVVT1VAQxbS77p3gYKANYYS4AbpUktuXe437W9995znPJ"
 
 def plot_time_elapsed_serialize_text(t_t_pickle, t_t_csv, file_type):
     x = [i for i in range(len(t_t_pickle))]
@@ -45,7 +45,10 @@ def run_measurement(document, runs, type):
 
         # deserialize
         out_file = open(os.path.join(sys.path[0], document), "rb")
-
+        if type == "pickle":
+            data = pickle.loads(out_file.read())
+            with open(f"{document}", "w") as f:
+                f.write(str(data))
         if type == "json":
             data = json.loads(out_file.read())["data"]
             with open(f"{document}", "w") as f:
@@ -54,7 +57,7 @@ def run_measurement(document, runs, type):
             data = b''
             for line in out_file.readlines():
                 data += line
-            with open(f"{document}", "w") as f:
+            with open(f"{document}", "wb") as f:
                 f.write(data)
 
         out_file.close()
@@ -64,8 +67,16 @@ def run_measurement(document, runs, type):
         t_t.append(end - start1)
         print("Run {}: deserialize {}, total {}".format(i + 1, round(t_d[i], 8), round(t_t[i], 8)))
     print("Avg: deserialize {}, total {}".format(np.mean(t_d), np.mean(t_t)))
+    return t_t
 
 
 # run_measurement(PICKLE_FILE_HASH, 10, "pickle")
 print("---------------")
-run_measurement(PICKLE_FILE_HASH, 10, "json")
+# run_measurement(PICKLE_FILE_HASH, 10, "json")
+
+tt_csv = run_measurement(FILE_CSV, 10, "csv")
+tt_pickle = run_measurement(PICKLE_FILE_HASH, 10, "pickle")
+
+
+    # try with random numbers
+plot_time_elapsed_serialize_text(tt_pickle, tt_csv, "text")
