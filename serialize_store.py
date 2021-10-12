@@ -17,10 +17,10 @@ IMG = "bunny.jpg"
 
 
 # type:"text", "image"
-def plot_time_elapsed_serialize_text(t_t_json, t_t_csv, file_type):
-    x = [i for i in range(len(t_t_json))]
+def plot_time_elapsed_serialize_text(t_t_pickle, t_t_csv, file_type):
+    x = [i for i in range(len(t_t_pickle))]
 
-    plt.plot(x, t_t_json, label="JSON {} serialization".format(file_type))
+    plt.plot(x, t_t_pickle, label="Pickle {} serialization".format(file_type))
     plt.plot(x, t_t_csv, label="CSV {} serialization".format(file_type))
 
     plt.title("Time elapsed to serialize and store for {}".format(file_type))
