@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 
 client = ipfshttpclient.connect("/ip4/127.0.0.1/tcp/5001")
 
-FILE = "testfile.txt"
+FILE = "data/1mb.txt"
 IMG = "bunny.jpg"
 
 
@@ -20,7 +20,7 @@ IMG = "bunny.jpg"
 def plot_time_elapsed_serialize_text(t_t_pickle, t_t_csv, file_type):
     x = [i for i in range(len(t_t_pickle))]
 
-    plt.plot(x, t_t_pickle, label="Pickle {} serialization".format(file_type))
+    plt.plot(x, t_t_pickle, label="PICKLE {} serialization".format(file_type))
     plt.plot(x, t_t_csv, label="CSV {} serialization".format(file_type))
 
     plt.title("Time elapsed to serialize and store for {}".format(file_type))
