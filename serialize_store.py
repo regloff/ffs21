@@ -28,6 +28,7 @@ def plot_time_elapsed_serialize_text(t_t_pickle, t_t_csv, file_type):
     plt.ylabel("time")
 
     plt.legend()
+    plt.savefig("Serialization.png")
     plt.show()
 
 def plot_time_elapsed_serialize_image(x_array, t_t_csv, file_type):
@@ -40,6 +41,7 @@ def plot_time_elapsed_serialize_image(x_array, t_t_csv, file_type):
     plt.ylabel("time")
 
     plt.legend()
+    plt.savefig("img.png")
     plt.show()
 
 
@@ -89,7 +91,4 @@ tt_img = run_measurement(IMG, 10, "csv")
 # try with random numbers
 p1 = plot_time_elapsed_serialize_text(tt_pickle, tt_csv, "text")
 p2 = plot_time_elapsed_serialize_image([0] * len(tt_img),tt_img, "image")
-
-plt.savefig(p1,'serializations.png')
-plt.savefig(p2,'img.png')
 
