@@ -7,13 +7,27 @@ import sys
 import pickle
 import time
 import os
-
 import numpy as np
+import matplotlib.pyplot as plt
 
 client = ipfshttpclient.connect("/ip4/127.0.0.1/tcp/5001")
 
 PICKLE_FILE_HASH = "QmPwsb72V1e6sfMFzQRf7Rf538xsy5zymhWqxm6QkUzRwa"
 PICKLE_IMG_HASH = "QmQWgYQphs8NM1RfWr2UmhEd7f1UjN9RfP46R24g8neSvB"
+
+
+def plot_time_elapsed_serialize_text(t_t_pickle, t_t_csv, file_type):
+    x = [i for i in range(len(t_t_pickle))]
+
+    plt.plot(x, t_t_pickle, label="Pickle {} deserialization".format(file_type))
+    plt.plot(x, t_t_csv, label="CSV {} deserialization".format(file_type))
+
+    plt.title("Time elapsed to retrieve and deserialize for {}".format(file_type))
+    plt.xlabel("# run")
+    plt.ylabel("time")
+
+    plt.legend()
+    plt.show()
 
 
 def run_measurement(document, runs, type):

@@ -7,13 +7,29 @@ import sys
 import pickle
 import time
 import os
-
 import numpy as np
+import matplotlib.pyplot as plt
 
 client = ipfshttpclient.connect("/ip4/127.0.0.1/tcp/5001")
 
 FILE = "testfile.txt"
 IMG = "bunny.jpg"
+
+
+# type:"text", "image"
+def plot_time_elapsed_serialize_text(t_t_pickle, t_t_csv, file_type):
+    x = [i for i in range(len(t_t_pickle))]
+
+    plt.plot(x, t_t_pickle, label="Pickle {} serialization".format(file_type))
+    plt.plot(x, t_t_csv, label="CSV {} serialization".format(file_type))
+
+    plt.title("Time elapsed to serialize and store for {}".format(file_type))
+    plt.xlabel("# run")
+    plt.ylabel("time")
+
+    plt.legend()
+    plt.show()
+
 
 def run_measurement(document, runs, type):
 
@@ -49,3 +65,7 @@ def run_measurement(document, runs, type):
 # run_measurement(FILE, 10, "pickle")
 print("---------------")
 run_measurement(FILE, 10, "json")
+run_measurement(IMG, 10, "csv")
+
+# try with random numbers
+plot_time_elapsed_serialize_text([1.3, 1.6, 0.04, 3.66, 4.52, 0.02], [0.34, 4.09, 5.23, 7.32, 0.01, 6.4], "text")
