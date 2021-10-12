@@ -1,0 +1,3 @@
+Rating: 7/10
+
+The approach is well documented and the installation was easy. However, the used apis in python were outdated and not so well documented. We had to try out multiple versions until it finally worked. What was further helpful is that even if it is an experimental approach, we were able to find multiple resources discussing it on the internet. However, we perceive IPFS still as kind of a "blackbox". As a user, it is not so clear what happens after adding a file to the network, as this process is not transparent.
