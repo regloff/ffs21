@@ -1,5 +1,6 @@
 # ipfs: 0.8.0
 # ipfshttpclient: pip install ipfshttpclient==0.8.0a2
+import json
 
 import ipfshttpclient
 import sys
@@ -12,7 +13,7 @@ import numpy as np
 client = ipfshttpclient.connect("/ip4/127.0.0.1/tcp/5001")
 
 FILE = "testfile.txt"
-IMG = "logo.png"
+IMG = "bunny.jpg"
 
 def run_measurement(document, runs, type):
 
@@ -26,8 +27,8 @@ def run_measurement(document, runs, type):
 
         # serialize
         in_file = open(os.path.join(sys.path[0], document), "rb")
-        if type == "pickle":
-            serialized = pickle.dumps(in_file.read())
+        if type == "json":
+            serialized = bytes(json.dumps({"data": str(in_file.read())}), encoding="utf-8")
         if type == "csv":
             serialized = b""
             for line in in_file.readlines():
@@ -45,6 +46,6 @@ def run_measurement(document, runs, type):
     print("Avg: serialize {}, total {}".format(np.mean(t_s), np.mean(t_t)))
     print(res)
 
-run_measurement(FILE, 10, "pickle")
+# run_measurement(FILE, 10, "pickle")
 print("---------------")
-run_measurement(IMG, 10, "csv")
+run_measurement(FILE, 10, "json")

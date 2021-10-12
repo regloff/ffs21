@@ -1,5 +1,6 @@
 # ipfs: 0.8.0
 # ipfshttpclient: pip install ipfshttpclient==0.8.0a2
+import json
 
 import ipfshttpclient
 import sys
@@ -11,8 +12,8 @@ import numpy as np
 
 client = ipfshttpclient.connect("/ip4/127.0.0.1/tcp/5001")
 
-PICKLE_FILE_HASH = "QmVaeSaXaeMw5XFgibRUBD45LRYbuprQtYMEdWy1aZN3qB"
-PICKLE_IMG_HASH = "QmZMHFcNFEknmjtTLpUX8pKvrasfWHYSxLRB2yQawfsiCp"
+PICKLE_FILE_HASH = "QmPwsb72V1e6sfMFzQRf7Rf538xsy5zymhWqxm6QkUzRwa"
+PICKLE_IMG_HASH = "QmQWgYQphs8NM1RfWr2UmhEd7f1UjN9RfP46R24g8neSvB"
 
 
 def run_measurement(document, runs, type):
@@ -30,12 +31,18 @@ def run_measurement(document, runs, type):
 
         # deserialize
         out_file = open(os.path.join(sys.path[0], document), "rb")
-        if type == "pickle":
-            serialized = pickle.loads(out_file.read())
+
+        if type == "json":
+            data = json.loads(out_file.read())["data"]
+            with open(f"{document}", "w") as f:
+                f.write(data)
         elif type == "csv":
-            serialized = b''
+            data = b''
             for line in out_file.readlines():
-                serialized += line
+                data += line
+            with open(f"{document}", "w") as f:
+                f.write(data)
+
         out_file.close()
         end = time.time()
 
@@ -45,6 +52,6 @@ def run_measurement(document, runs, type):
     print("Avg: deserialize {}, total {}".format(np.mean(t_d), np.mean(t_t)))
 
 
-run_measurement(PICKLE_FILE_HASH, 10, "pickle")
+# run_measurement(PICKLE_FILE_HASH, 10, "pickle")
 print("---------------")
-run_measurement(PICKLE_IMG_HASH, 10, "csv")
+run_measurement(PICKLE_FILE_HASH, 10, "json")
