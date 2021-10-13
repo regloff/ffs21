@@ -44,7 +44,10 @@ def run_measurement(document, runs, type):
         in_file = open(os.path.join(sys.path[0], document), "rb")
         if type == "pickle":
             serialized = pickle.dumps(in_file.read())
-
+        if type == "csv":
+            serialized = b""
+            for line in in_file.readlines():
+                serialized += line
         in_file.close()
         end1 = time.time()
 
@@ -60,7 +63,7 @@ def run_measurement(document, runs, type):
 
 run_measurement(FILE, 10, "pickle")
 print("---------------")
-run_measurement(IMG, 10, "pickle")
+run_measurement(IMG, 10, "csv")
 
 # try with random numbers
 plot_time_elapsed_serialize_text([1.3, 1.6, 0.04, 3.66, 4.52, 0.02], [0.34, 4.09, 5.23, 7.32, 0.01, 6.4], "text")
